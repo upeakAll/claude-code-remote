@@ -1,3 +1,7 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
+import { fileURLToPath } from 'url';
 import * as readline from 'readline';
 import { Command } from 'commander';
 import { loadConfig, saveConfig } from '../utils/config.js';
@@ -5,6 +9,23 @@ import { installHooks } from '../hooks/hook-installer.js';
 import { createLogger } from '../utils/logger.js';
 
 const logger = createLogger('cli:init');
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+function installSkill(): void {
+  const skillSource = path.resolve(__dirname, '..', 'skill', 'remote.md');
+  const skillDir = path.join(os.homedir(), '.claude', 'skills', 'remote');
+  const skillTarget = path.join(skillDir, 'remote.md');
+
+  if (!fs.existsSync(skillSource)) {
+    logger.warn({ path: skillSource }, 'Skill source not found, skipping skill install');
+    return;
+  }
+
+  fs.mkdirSync(skillDir, { recursive: true });
+  fs.copyFileSync(skillSource, skillTarget);
+  logger.info({ target: skillTarget }, 'Skill installed');
+}
 
 function prompt(rl: readline.Interface, question: string): Promise<string> {
   return new Promise((resolve) => {
@@ -44,6 +65,8 @@ export async function initAction(): Promise<void> {
     saveConfig(config);
     logger.info('Configuration saved');
 
+    installSkill();
+
     const workdir = process.cwd();
     installHooks(workdir, config.server.port);
     logger.info({ workdir }, 'Hooks installed');
@@ -54,6 +77,7 @@ export async function initAction(): Promise<void> {
     console.log(`  Feishu App ID: ${config.feishu.appId || '(not set)'}`);
     console.log(`  Allowed users: ${config.allowedUsers.length > 0 ? config.allowedUsers.join(', ') : '(all)'}`);
     console.log(`  Hooks installed in: ${workdir}/.claude/settings.json`);
+    console.log(`  Skill installed to: ~/.claude/skills/remote/remote.md`);
   } finally {
     rl.close();
   }

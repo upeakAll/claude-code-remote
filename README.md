@@ -55,26 +55,20 @@
 - Claude Code CLI
 - 平台：macOS / Linux
 
-### 1. 安装依赖
+### 1. 安装
 
 ```bash
 # 安装 tmux（如未安装）
 brew install tmux        # macOS
 sudo apt install tmux    # Linux
 
-npm install
-npm run build
+# 全局安装 claude-remote
+npm install -g claude-code-remote
 ```
 
-### 2. 安装 Skill（让 CC 识别 /remote 命令）
+> 也可以不安装，直接用 `npx claude-code-remote init` 代替 `claude-remote init`。
 
-```bash
-# 将 skill 文件链接到 CC 的 skills 目录
-mkdir -p ~/.claude/skills/remote
-ln -s "$(pwd)/src/skill/remote.md" ~/.claude/skills/remote/remote.md
-```
-
-### 3. 初始化配置
+### 2. 初始化配置
 
 ```bash
 claude-remote init
@@ -101,7 +95,7 @@ claude-remote init
 }
 ```
 
-### 4. 飞书应用配置
+### 3. 飞书应用配置
 
 在 [飞书开发者后台](https://open.feishu.cn/app) 中：
 
@@ -113,13 +107,13 @@ claude-remote init
    - 添加回调订阅：**卡片回传交互 (card.action.trigger)**
 4. 发布应用版本并让管理员审批
 
-### 5. 启动 Bridge 服务
+### 4. 启动 Bridge 服务
 
 ```bash
 claude-remote start
 ```
 
-### 6. 在 tmux 中启动 CC 并连接
+### 5. 在 tmux 中启动 CC 并连接
 
 ```bash
 # 创建 tmux 会话
