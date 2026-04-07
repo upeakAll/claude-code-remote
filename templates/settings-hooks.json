@@ -1,0 +1,48 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -X POST http://127.0.0.1:9876/hook -H 'Content-Type: application/json' -H 'X-Token: $REMOTE_TOKEN' -d @-"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -X POST http://127.0.0.1:9876/hook -H 'Content-Type: application/json' -H 'X-Token: $REMOTE_TOKEN' -d @-"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -X POST http://127.0.0.1:9876/hook -H 'Content-Type: application/json' -H 'X-Token: $REMOTE_TOKEN' -d @-"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -X POST http://127.0.0.1:9876/hook -H 'Content-Type: application/json' -H 'X-Token: $REMOTE_TOKEN' -d @-"
+          }
+        ]
+      }
+    ]
+  }
+}

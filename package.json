@@ -1,0 +1,52 @@
+{
+  "name": "claude-code-remote",
+  "version": "0.1.0",
+  "description": "Remote control Claude Code via Feishu bot",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "claude-remote": "./bin/claude-remote.js"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.60.0",
+    "commander": "^12.0.0",
+    "pino": "^9.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upeakAll/claude-code-remote.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "feishu",
+    "remote-control",
+    "cli"
+  ],
+  "files": [
+    "bin",
+    "dist",
+    "templates",
+    "src/skill"
+  ]
+}

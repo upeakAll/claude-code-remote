@@ -1,0 +1,24 @@
+# Sensitive files
+.env
+.env.local
+.env.*.local
+
+# Development
+__tests__/
+docs/
+spec/
+vitest.config.ts
+tsconfig.json
+
+# Source (dist is included instead)
+src/
+!src/skill/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Build artifacts
+*.tsbuildinfo
