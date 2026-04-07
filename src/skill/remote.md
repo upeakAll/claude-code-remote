@@ -12,30 +12,81 @@ Usage: `/remote` or `/remote on` to connect, `/remote status` to check. Disconne
 
 ## 连接注册（on）- `/remote` or `/remote on`
 
-Register the current working directory with the Bridge server and install hooks. This is done in one step using the `claude-remote register` command.
+### 步骤 1：检查 claude-remote 是否已安装
 
-1. Run `pwd` to determine the current working directory. Save as `WORKDIR`.
-2. Execute:
-   ```
-   claude-remote register
-   ```
-   This single command will automatically:
-   - Check Bridge server is running
-   - Verify tmux environment (reject if not in tmux)
-   - Generate session ID
-   - Register session with Bridge
-   - Save token file to `.claude/remote-token`
-   - Merge hooks into `.claude/settings.json`
-3. If the command reports "not in tmux" error, tell the user:
-   ```
-   ⚠️ 远程控制需要 CC 在 tmux 中运行（支持熄屏/锁屏状态下接收飞书消息）。
-   请先安装 tmux（brew install tmux），然后：
-     1. tmux new -s claude
-     2. 在 tmux 会话内重新启动 claude
-     3. 再次运行 /remote
-   ```
-4. If the command reports Bridge not running, tell the user to start it first with `claude-remote start`.
-5. On success, report the output to the user.
+Execute:
+```
+which claude-remote 2>/dev/null && claude-remote --version
+```
+
+If the command is not found (no output), tell the user:
+```
+⚠️ claude-remote 未安装。需要全局安装后才能使用远程控制功能。
+
+安装命令：
+  npm install -g claude-code-remote
+
+安装完成后请再次运行 /remote。
+```
+Stop here and wait for the user to install.
+
+### 步骤 2：检查 Bridge 服务是否运行
+
+Execute:
+```
+claude-remote status
+```
+
+If the output shows Bridge is NOT running (process not found or status check failed), ask the user:
+```
+Bridge 服务未启动。是否现在启动？
+
+启动命令：claude-remote start
+```
+
+Wait for user confirmation, then execute:
+```
+claude-remote start
+```
+
+Verify it started successfully. If startup fails (e.g., missing Feishu config), tell the user to run `claude-remote init` first to configure Feishu credentials, then stop here.
+
+### 步骤 3：检查 tmux 环境
+
+Execute:
+```
+echo $TMUX
+```
+
+If the output is empty (not in tmux), tell the user:
+```
+⚠️ 远程控制需要 CC 在 tmux 中运行（支持熄屏/锁屏状态下接收飞书消息）。
+请先安装 tmux（brew install tmux），然后：
+  1. tmux new -s claude
+  2. 在 tmux 会话内重新启动 claude
+  3. 再次运行 /remote
+```
+Stop here.
+
+### 步骤 4：注册会话
+
+Execute:
+```
+claude-remote register
+```
+
+This single command will automatically:
+- Generate session ID
+- Register session with Bridge
+- Save token file to `.claude/remote-token`
+- Merge hooks into `.claude/settings.json`
+
+### 步骤 5：报告结果
+
+On success, report the output to the user. Remind the user to bind the session from Feishu:
+```
+在飞书中找到 Bot 对话，发送 /list 查看会话，然后 /bind <session_id> 绑定。
+```
 
 ---
 
